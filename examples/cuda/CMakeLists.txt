@@ -1,0 +1,1 @@
+add_executable(cuda_00_hello 00_hello/main.cu)
