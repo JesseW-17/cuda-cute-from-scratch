@@ -13,5 +13,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 所有可执行文件统一输出到 build/bin。
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+function(add_cuda_example name)
+    add_executable(${name} ${ARGN})
+    target_include_directories(${name} PRIVATE
+        "${PROJECT_SOURCE_DIR}/include"
+    )
+endfunction()
+
 add_subdirectory(examples/cuda)
 add_subdirectory(examples/cute)

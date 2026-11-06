@@ -1,15 +1,9 @@
 #include <cuda_runtime.h>
 #include <cstdio>
 #include <cstdlib>
+#include "cuda_check.h"
 
 using namespace std;
-
-void cuda_check(cudaError_t error) {
-    if (error != cudaSuccess) {
-        fprintf(stderr, "CUDA Error: %s\n", cudaGetErrorString(error));
-        exit(EXIT_FAILURE);
-    }
-}
 
 __global__ void hello() {
     printf("Hello From GPU!\n");
