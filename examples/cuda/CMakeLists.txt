@@ -1,2 +1,3 @@
 add_cuda_example(cuda_00_hello 00_hello/main.cu)
 add_cuda_example(cuda_01_vector_add 01_vector_add/main.cu)
+add_cuda_example(cuda_02_silu_residual 02_silu_residual/main.cu)
