@@ -101,7 +101,6 @@ int main() {
     cuda_check(cudaMemcpy(dX, X.data(), N * sizeof(float), cudaMemcpyHostToDevice));
 
     auto run_case = [&](char* name, auto launch) {
-        cuda_check(cudaMemset(dSum, 0, sizeof(float)));
         launch();
         cuda_check(cudaGetLastError());
         cuda_check(cudaMemcpy(&Sum, dSum, sizeof(float), cudaMemcpyDeviceToHost));
@@ -119,9 +118,15 @@ int main() {
 
     int block = 256;
     int grid = (N + block - 1) / block;
-    run_case("v0", [&]{reduce_sum_v0<<<grid, block>>>(dX, dSum, N);});
+    run_case("v0", [&]{
+        cuda_check(cudaMemset(dSum, 0, sizeof(float)));
+        reduce_sum_v0<<<grid, block>>>(dX, dSum, N);
+    });
     grid = (N + block * 4 - 1) / (block * 4);
-    run_case("v1", [&]{reduce_sum_v1<<<grid, block>>>(dX, dSum, N);});
+    run_case("v1", [&]{
+        cuda_check(cudaMemset(dSum, 0, sizeof(float)));
+        reduce_sum_v1<<<grid, block>>>(dX, dSum, N);
+    });
 
     cuda_check(cudaFree(dX));
     cuda_check(cudaFree(dSum));
