@@ -20,8 +20,6 @@ __device__ void load_tile(T (&tile)[ROWS][COLS], const T* src, int stride, int i
 }
 
 __global__ void gemm_bf16_v0(const __nv_bfloat16* A, const __nv_bfloat16* B, float* C, int M, int N, int K) {
-    // warp coarsening
-    
     wmma::fragment<wmma::matrix_a, 16, 16, 16, __nv_bfloat16, wmma::row_major> a;
     wmma::fragment<wmma::matrix_b, 16, 16, 16, __nv_bfloat16, wmma::row_major> b;
     wmma::fragment<wmma::accumulator, 16, 16, 16, float> c;
@@ -48,6 +46,7 @@ __global__ void gemm_bf16_v0(const __nv_bfloat16* A, const __nv_bfloat16* B, flo
 
 template<int BK>
 __global__ void gemm_bf16_v1(const __nv_bfloat16* A, const __nv_bfloat16* B, float* C, int M, int N, int K) {
+    // 提升数据搬运深度
     wmma::fragment<wmma::matrix_a, 16, 16, 16, __nv_bfloat16, wmma::row_major> a;
     wmma::fragment<wmma::matrix_b, 16, 16, 16, __nv_bfloat16, wmma::row_major> b;
     wmma::fragment<wmma::accumulator, 16, 16, 16, float> c;
@@ -78,6 +77,7 @@ __global__ void gemm_bf16_v1(const __nv_bfloat16* A, const __nv_bfloat16* B, flo
 
 template<int BK>
 __global__ void gemm_bf16_v2(const __nv_bfloat16* A, const __nv_bfloat16* B, float* C, int M, int N, int K) {
+    //warp coarsening
     wmma::fragment<wmma::matrix_a, 16, 16, 16, __nv_bfloat16, wmma::row_major> a[2];
     wmma::fragment<wmma::matrix_b, 16, 16, 16, __nv_bfloat16, wmma::row_major> b[2];
     wmma::fragment<wmma::accumulator, 16, 16, 16, float> c[2][2];
