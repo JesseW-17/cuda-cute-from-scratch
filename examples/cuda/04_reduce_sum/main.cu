@@ -39,7 +39,7 @@ __global__ void reduce_sum_v0(const float* X, float* Sum, int N) {
 }
 
 __global__ void reduce_sum_v1(const float* X, float* Sum, int N) {
-    // 向量化访存
+    // 向量化访存，thread coarsening
     float sum = 0.0f;
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
 

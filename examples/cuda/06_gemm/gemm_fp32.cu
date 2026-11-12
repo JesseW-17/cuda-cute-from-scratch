@@ -101,8 +101,9 @@ __global__ void gemm_fp32_v1(const float* A, const float* B, float* C, int M, in
 }
 
 int main() {
+    int M = 2048, N = 2048, K = 512;
     // int M = 512, N = 512, K = 512;
-    int M = 257, N = 259, K = 263;
+    // int M = 257, N = 259, K = 263;
     std::vector<float> A(size_t(M) * K), B(size_t(K) * N), C(size_t(M) * N);
     std::vector<double> Ref(C.size());
     for (size_t i = 0; i < A.size(); ++i)
